@@ -1,0 +1,22 @@
+.content{
+  margin-left: 15vw;
+  flex: 1;
+  width:85vw;
+  height:100vh;
+}
+
+.sidenav{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 15vw;
+  height: 100vh;
+  background-color: #f4f4f4;
+  z-index: 1000;
+}
+
+.layout{
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
