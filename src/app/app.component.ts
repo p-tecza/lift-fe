@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {RouterLink, RouterOutlet} from '@angular/router';
-import {SideNavComponent} from "./lift/side-nav/side-nav.component";
+import {SideNavComponent} from "./lift/components/side-nav/side-nav.component";
 
 @Component({
   selector: 'app-root',

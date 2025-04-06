@@ -1,0 +1,23 @@
+<div class="example-container">
+  <div class="container-element" routerLink="/dashboard" (click)="switchScope('dashboard')"
+       [ngClass]="{'active-subpage': active === 'dashboard'}">
+    Dashboard
+  </div>
+  <div class="container-element" routerLink="/upload" (click)="switchScope('upload')"
+       [ngClass]="{'active-subpage': active === 'upload'}">
+    Upload Document
+  </div>
+  <div class="container-element" routerLink="/analyze" (click)="switchScope('analyze')"
+       [ngClass]="{'active-subpage': active === 'analyze'}">
+    Analyze
+  </div>
+  <div class="container-element" routerLink="/account" (click)="switchScope('account')"
+       [ngClass]="{'active-subpage': active === 'account'}">
+    Account
+  </div>
+
+
+  <div class="sidenav-footer">
+    LIFT v0.0.1
+  </div>
+</div>
