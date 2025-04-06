@@ -1,0 +1,16 @@
+
+<div class="center-form-full">
+
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()" (change)="onChange()">
+    <table>
+      <th class="pad">Provide ticket data.</th>
+      <tr><label for="email">Sender e-mail:</label></tr>
+      <tr><input type="email" id="email" formControlName="email" class="input-width"></tr>
+      <tr><label for="subject">Subject:</label></tr>
+      <tr><input type="text" id="subject" formControlName="subject" class="input-width"></tr>
+      <tr><label for="content">Ticket content:</label></tr>
+      <tr><textarea id="content" formControlName="content" class="big-textarea"></textarea></tr>
+    </table>
+    <button type="submit" [disabled]="myForm.invalid">Submit</button>
+  </form>
+</div>

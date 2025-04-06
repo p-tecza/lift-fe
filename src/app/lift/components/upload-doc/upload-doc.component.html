@@ -3,10 +3,40 @@
     <mat-grid-tile
       [colspan]="tile.cols"
       [rowspan]="tile.rows"
-      [style.background]="tile.color"
-      [style.border-width]="0">{{tile.text}}</mat-grid-tile>
+      [style.border-width]="0">
+
+      @switch (tile.id) {
+        @case ("header") {
+          <div>
+            <h1 class="heading"> Upload document(s)</h1>
+          </div>
+        }
+        @case ("optionFile") {
+          <div class="tab-option" (click)="switchScope(false)">
+            File Upload
+          </div>
+        }
+        @case ("optionPlain"){
+          <div class="tab-option" (click)="switchScope(true)">
+            Plain-text Upload
+          </div>
+        }
+        @case ("content"){
+          <div class="content">
+          @if(plainTextUploadScope){
+            <app-text-uploader>
+
+            </app-text-uploader>
+          }
+          @else{
+            <app-file-uploader [requiredFileType]="['pdf', 'png', 'jpg', 'jpeg']">
+            </app-file-uploader>
+          }
+          </div>
+        }
+        @default {}
+      }
+    </mat-grid-tile>
   }
 </mat-grid-list>
 
-<app-file-uploader [requiredFileType]="['pdf', 'png', 'jpg', 'jpeg']">
-</app-file-uploader>

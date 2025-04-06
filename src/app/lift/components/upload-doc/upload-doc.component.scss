@@ -1,0 +1,27 @@
+@import 'variables';
+
+.heading{
+  justify-content: center;
+  justify-items: center;
+  font-family: monospace;
+}
+
+.tab-option{
+  background: $bg-highlight-color;
+  width:100%;
+  height:100%;
+  text-align: center;
+  align-content: center;
+  font-family: monospace;
+  font-size: 4vh;
+}
+
+.tab-option:hover{
+  background: #444444;
+  cursor: pointer;
+}
+
+.content{
+  width:100%;
+  height:100%;
+}
