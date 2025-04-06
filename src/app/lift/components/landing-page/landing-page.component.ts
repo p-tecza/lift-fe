@@ -1,13 +1,6 @@
 import { Component } from '@angular/core';
 import {MatGridList, MatGridTile} from "@angular/material/grid-list";
-
-export interface Tile {
-  color: string;
-  cols: number;
-  rows: number;
-  text: string;
-}
-
+import {Tile} from "../../utils/tile";
 
 @Component({
   selector: 'app-landing-page',
