@@ -6,7 +6,7 @@
          [hidden]="true"
          #fileUpload>
 
-  <div class="file-upload-files">
+  <div class="file-attach-files">
     @if (fileNames.length > 0) {
       <ol>
         @for (fileName of fileNames; track fileName) {
@@ -18,14 +18,19 @@
     }
   </div>
 
-  <div class='file-upload'>
-    <button class="upload-btn"
+  <div class='file-attach'>
+    <button class="attach-btn"
             (click)="fileUpload.click()">
       Attach<br>
       <mat-icon>attach_file</mat-icon>
     </button>
     @if (files.length > 0) {
-      <button class="upload-btn-ml2"
+      <button class="attach-btn-ml2"
+              (click)="upload()">
+        Upload<br>
+        <mat-icon>upload</mat-icon>
+      </button>
+      <button class="attach-btn-ml2"
               (click)="clearFiles()">
         Clear<br>
         <mat-icon>delete</mat-icon>
