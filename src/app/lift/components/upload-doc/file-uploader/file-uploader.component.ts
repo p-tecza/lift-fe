@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {MatIcon} from "@angular/material/icon";
 import {Subscription} from "rxjs";
-import {FileUploadService} from "../../../services/file-upload.service";
+import {UploadService} from "../../../services/upload.service";
 
 
 @Component({
@@ -24,7 +24,7 @@ export class FileUploaderComponent {
   uploadProgress:number | undefined = undefined;
   uploadSub: Subscription | undefined = undefined;
 
-  constructor(private fileUploadService: FileUploadService) {} //private http: HttpClient
+  constructor(private fileUploadService: UploadService) {} //private http: HttpClient
 
   onFileSelected(event: any) {
     const files:FileList = event.target.files;
