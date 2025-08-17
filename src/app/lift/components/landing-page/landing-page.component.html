@@ -1,10 +1,36 @@
-<mat-grid-list cols="4" rowHeight="19.88vh">
-  @for (tile of tiles; track tile) {
-    <mat-grid-tile
-      [colspan]="tile.cols"
-      [rowspan]="tile.rows"
-      [style.background]="tile.color"
-    [style.border-width]="0">{{tile.text}}</mat-grid-tile>
-  }
-</mat-grid-list>
+<div style="background: black; font-family: monospace;" >
+  <div style="text-align: center; margin-top: 3%">
+    <h1 style="font-family: monospace;">Dashboard</h1>
+  </div>
+  <h3 style="text-align: center">Classifications amount per day</h3>
+  <div style="margin-top: 1%">
+    <!-- Wykres liniowy -->
+    <canvas baseChart
+            [data]="lineChartData"
+            [options]="lineChartOptions"
+            [type]="lineChartType">
+    </canvas>
+  </div>
+  <hr>
+  <h3 style="text-align: center">Classification result distribution</h3>
+  <div style="margin-top: 1%">
+    <!-- Wykres kołowy -->
+    <canvas baseChart
+            [data]="pieChartData"
+            [options]="pieChartOptions"
+            [type]="pieChartType">
+    </canvas>
+  </div>
+  <hr>
+  <h3 style="text-align: center">Prediction certainty</h3>
+  <div style="margin-top: 1%">
+    <!-- Histogram -->
+    <canvas baseChart
+            [data]="barChartData"
+            [options]="barChartOptions"
+            [type]="barChartType">
+    </canvas>
+  </div>
+</div>
+
 
