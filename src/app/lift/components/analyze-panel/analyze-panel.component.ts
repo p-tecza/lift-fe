@@ -82,7 +82,6 @@ export class AnalyzePanelComponent implements OnInit {
     let data: TicketModel[] | null = [];
 
     if (!this.startDate) {
-      console.log("E?")
       const defaultPastDate = new Date();
       defaultPastDate.setDate(defaultPastDate.getDate() - 30);
       this.startDate = this.formatReverseMyDate(defaultPastDate);
