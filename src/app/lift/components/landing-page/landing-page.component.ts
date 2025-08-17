@@ -40,8 +40,8 @@ export class LandingPageComponent implements OnInit{
   lineChartOptions: ChartConfiguration<"line">['options'] = {
     responsive: true,
     scales: {
-      y: {beginAtZero: true, title: {display: true, text: 'Liczba transakcji'}},
-      x: {title: {display: true, text: 'Data'}}
+      y: {beginAtZero: true, title: {display: true, text: 'Classification count'}},
+      x: {title: {display: true, text: 'Date'}}
     }
   };
   lineChartType: "line" = "line";
@@ -100,7 +100,7 @@ export class LandingPageComponent implements OnInit{
     this.lineChartData = {
       labels: sortedDates,
       datasets: [{
-        label: 'Liczba transakcji',
+        label: 'Classifications count',
         data: sortedDates.map(date => dateCountMap.get(date) || 0),
         borderColor: '#3F51B5',
         backgroundColor: 'rgba(63, 81, 181, 0.2)',
@@ -134,7 +134,6 @@ export class LandingPageComponent implements OnInit{
   }
 
   prepareBarChartData() {
-    // Tworzenie przedziałów kwotowych
     const amountRanges = [
       {min: 0, max: 50, label: '0%-50%'},
       {min: 50, max: 60, label: '50%-60%'},
@@ -146,7 +145,6 @@ export class LandingPageComponent implements OnInit{
       {min: 98, max: Infinity, label: '>98%'}
     ];
 
-    // Liczenie transakcji w przedziałach
     const rangeCounts = amountRanges.map(range => {
       return this.tickets.filter(t => {
           let maxProb = Math.max(t.changeProb, t.problemProb, t.reqProb) * 100
