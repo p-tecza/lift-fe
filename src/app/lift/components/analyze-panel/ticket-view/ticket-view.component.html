@@ -1,0 +1,14 @@
+<div class='wrap-modal'>
+  <p>
+    Sent by: {{ ticketContent ? ticketContent.senderEmail : '?' }}
+  </p>
+  <h4>
+    Subject: {{ ticketContent ? ticketContent.subject : '?' }}
+  </h4>
+  <p>
+    Message: {{ ticketContent ? ticketContent.message : '?' }}
+  </p>
+  <p>
+    Ticket received date: {{ ticketContent ? ticketContent.createdAt : '?' }}
+  </p>
+</div>

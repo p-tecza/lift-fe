@@ -5,6 +5,7 @@
   margin-bottom: 20px;
   align-items: center;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .filter-button {
@@ -25,4 +26,7 @@ mat-paginator {
   background: transparent;
 }
 
-
+.pointer:hover{
+  cursor: pointer;
+  color: #ffabf3
+}

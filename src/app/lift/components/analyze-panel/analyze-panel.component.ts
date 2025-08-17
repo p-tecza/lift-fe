@@ -13,13 +13,18 @@ import {
   MatTableDataSource,
   MatTableModule
 } from "@angular/material/table";
-import {Transaction} from "../../model/transaction.model";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {FormsModule} from "@angular/forms";
 import {CurrencyPipe, DatePipe} from "@angular/common";
 import {MatButton} from "@angular/material/button";
 import {MatInput} from "@angular/material/input";
+import {TicketModel} from "../../model/ticket.model";
+import {UploadService} from "../../services/upload.service";
+import {HttpEvent, HttpEventType} from "@angular/common/http";
+import {MatDialog} from "@angular/material/dialog";
+import {TicketViewComponent} from "./ticket-view/ticket-view.component";
+import {TicketContentModel} from "../../model/ticket-content.model";
 
 @Component({
   selector: 'app-analyze-panel',
@@ -31,7 +36,6 @@ import {MatInput} from "@angular/material/input";
     MatColumnDef,
     MatHeaderCell,
     MatCell,
-    CurrencyPipe,
     DatePipe,
     MatCellDef,
     MatHeaderCellDef,
@@ -48,19 +52,24 @@ import {MatInput} from "@angular/material/input";
   templateUrl: './analyze-panel.component.html',
   styleUrl: './analyze-panel.component.scss'
 })
-export class AnalyzePanelComponent implements OnInit{
-  displayedColumns: string[] = ['id', 'title', 'amount', 'date', 'category'];
-  dataSource = new MatTableDataSource<Transaction>();
+export class AnalyzePanelComponent implements OnInit {
+
+  constructor(private uploadService: UploadService,
+              private dialog: MatDialog) {
+  }
+
+  displayedColumns: string[] = ['id', 'subject', 'result', 'problem', 'change', 'request', 'date'];
+  dataSource = new MatTableDataSource<TicketModel>();
 
   // Paginacja
-  pageSizeOptions = [5];
+  pageSizeOptions = [5, 10];
   pageSize = 5;
   currentPage = 0;
   totalItems = 0;
 
   // Filtry
-  startDate: Date | null = null;
-  endDate: Date | null = null;
+  startDate: string | null = null;
+  endDate: string | null = null;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -69,36 +78,39 @@ export class AnalyzePanelComponent implements OnInit{
   }
 
   loadData() {
-    // Mock danych - w praktyce dane będą z API
-    const mockData: Transaction[] = [
-      { id: 1, title: 'Zakupy spożywcze', amount: 150.23, date: new Date('2024-05-15'), category: 'Jedzenie' },
-      { id: 2, title: 'Bilet miesięczny', amount: 100, date: new Date('2024-05-10'), category: 'Transport' },
-      { id: 3, title: 'Kino', amount: 45, date: new Date('2024-05-18'), category: 'Rozrywka' },
-      { id: 4, title: 'Czynsz', amount: 1200, date: new Date('2024-05-01'), category: 'Mieszkanie' },
-      { id: 5, title: 'Prezent', amount: 80, date: new Date('2024-04-28'), category: 'Inne' },
-      { id: 6, title: 'Laptop', amount: 3200, date: new Date('2024-04-20'), category: 'Elektronika' },
-      { id: 7, title: 'Książki', amount: 120, date: new Date('2024-05-22'), category: 'Edukacja' },
-      { id: 8, title: 'Restauracja', amount: 90, date: new Date('2024-05-21'), category: 'Jedzenie' },
-      { id: 9, title: 'Ubezpieczenie', amount: 220, date: new Date('2024-05-05'), category: 'Finanse' },
-      { id: 10, title: 'Siłownia', amount: 70, date: new Date('2024-05-12'), category: 'Zdrowie' },
-    ];
 
-    // Filtrowanie po dacie
-    let filteredData = mockData;
+    let data: TicketModel[] | null = [];
 
-    if (this.startDate || this.endDate) {
-      filteredData = mockData.filter(transaction => {
-        const transDate = transaction.date;
-        const afterStart = this.startDate ? transDate >= new Date(this.startDate) : true;
-        const beforeEnd = this.endDate ? transDate <= new Date(this.endDate) : true;
-        return afterStart && beforeEnd;
-      });
+    if (!this.startDate) {
+      console.log("E?")
+      const defaultPastDate = new Date();
+      defaultPastDate.setDate(defaultPastDate.getDate() - 30);
+      this.startDate = this.formatReverseMyDate(defaultPastDate);
     }
 
-    // Paginacja
-    this.totalItems = filteredData.length;
-    const startIndex = this.currentPage * this.pageSize;
-    this.dataSource.data = filteredData.slice(startIndex, startIndex + this.pageSize);
+    if (!this.endDate) {
+      this.endDate = this.formatReverseMyDate(new Date());
+    }
+
+    this.uploadService.fetchDataByDates(
+      this.formatMyDate(this.startDate),
+      this.formatMyDate(this.endDate)
+    ).subscribe({
+      next: (event: HttpEvent<TicketModel[]>) => {
+        if (event.type === HttpEventType.Response) {
+          data = event.body;
+          if (!data) return;
+          this.totalItems = data.length;
+          const startIndex = this.currentPage * this.pageSize;
+          this.dataSource.data = data.slice(startIndex, startIndex + this.pageSize);
+          console.log(data);
+        }
+      },
+      error: (err) => {
+        console.error('Błąd podczas pobierania danych:', err);
+      }
+    });
+
   }
 
   onPageChange(event: PageEvent) {
@@ -120,4 +132,58 @@ export class AnalyzePanelComponent implements OnInit{
     this.endDate = null;
     this.applyDateFilter();
   }
+
+  private formatMyDate(dateString: string): Date {
+
+    const parts = dateString.split('-');
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1;
+    const day = parseInt(parts[2], 10);
+
+    return new Date(year, month, day);
+  }
+
+  private formatReverseMyDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  sliceString(toSlice: string, maxL:number){
+    if(toSlice.length > maxL){
+      return toSlice.slice(0, maxL) + "...";
+    }
+    return toSlice
+  }
+
+  openModal(ticketId: string): void {
+
+    this.uploadService.fetchTicketContent(ticketId).subscribe({
+      next: (event: HttpEvent<TicketContentModel>) => {
+        if (event.type === HttpEventType.Response) {
+          const res = event.body;
+
+          console.log("RES DETAILS")
+          console.log(res)
+
+          const dialogRef = this.dialog.open(TicketViewComponent, {
+            width: '40%'
+          });
+          dialogRef.componentInstance.ticketContent = res;
+          dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+              console.log('Użytkownik potwierdził');
+            }
+          });
+        }
+      },
+      error: (err) => {
+        console.error('Błąd podczas pobierania danych:', err);
+      }
+    });
+
+
+  }
+
 }
