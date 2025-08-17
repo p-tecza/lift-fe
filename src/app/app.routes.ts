@@ -5,6 +5,11 @@ import {AccountPanelComponent} from "./lift/components/account-panel/account-pan
 import {UploadDocComponent} from "./lift/components/upload-doc/upload-doc.component";
 
 export const routes: Routes = [
+  {
+    path: '',
+    redirectTo: '/dashboard',
+    pathMatch: 'full'
+  },
   {path: 'dashboard', component: LandingPageComponent},
   {path: 'upload', component: UploadDocComponent},
   {path: 'analyze', component: AnalyzePanelComponent},
