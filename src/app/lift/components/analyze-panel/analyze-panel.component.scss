@@ -1,1 +1,28 @@
 @import 'variables';
+.filter-container {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filter-button {
+  margin-right: 10px;
+  height: 50px;
+}
+
+mat-form-field {
+  width: 180px;
+}
+
+table {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+mat-paginator {
+  background: transparent;
+}
+
+

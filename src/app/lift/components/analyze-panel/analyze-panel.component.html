@@ -1,1 +1,62 @@
-<p>analyze-panel works!</p>
+<div class="filter-container">
+  <mat-form-field>
+    <mat-label>Data od</mat-label>
+    <input matInput [(ngModel)]="startDate" type="date">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Data do</mat-label>
+    <input matInput [(ngModel)]="endDate" type="date">
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="applyDateFilter()" class="filter-button">
+    Filtruj
+  </button>
+
+  <button mat-button (click)="clearFilters()" class="clear-button">
+    Wyczyść filtry
+  </button>
+</div>
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <!-- ID Column -->
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef>ID</th>
+    <td mat-cell *matCellDef="let element">{{element.id}}</td>
+  </ng-container>
+
+  <!-- Title Column -->
+  <ng-container matColumnDef="title">
+    <th mat-header-cell *matHeaderCellDef>Nazwa</th>
+    <td mat-cell *matCellDef="let element">{{element.title}}</td>
+  </ng-container>
+
+  <!-- Amount Column -->
+  <ng-container matColumnDef="amount">
+    <th mat-header-cell *matHeaderCellDef>Kwota</th>
+    <td mat-cell *matCellDef="let element">{{element.amount | currency:'PLN'}}</td>
+  </ng-container>
+
+  <!-- Date Column -->
+  <ng-container matColumnDef="date">
+    <th mat-header-cell *matHeaderCellDef>Data</th>
+    <td mat-cell *matCellDef="let element">{{element.date | date:'dd.MM.yyyy'}}</td>
+  </ng-container>
+
+  <!-- Category Column -->
+  <ng-container matColumnDef="category">
+    <th mat-header-cell *matHeaderCellDef>Kategoria</th>
+    <td mat-cell *matCellDef="let element">{{element.category}}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<mat-paginator
+  [length]="totalItems"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="pageSizeOptions"
+  (page)="onPageChange($event)"
+  showFirstLastButtons>
+</mat-paginator>
