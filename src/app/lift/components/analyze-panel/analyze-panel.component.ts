@@ -99,6 +99,8 @@ export class AnalyzePanelComponent implements OnInit {
         if (event.type === HttpEventType.Response) {
           data = event.body;
           if (!data) return;
+          data = data.reverse()
+          
           this.totalItems = data.length;
           const startIndex = this.currentPage * this.pageSize;
           this.dataSource.data = data.slice(startIndex, startIndex + this.pageSize);
